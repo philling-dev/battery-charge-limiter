@@ -1,0 +1,12 @@
+
+[Unit]
+Description=Battery Charge Limiter Service
+After=multi-user.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStart=/usr/local/bin/bcl-apply
+
+[Install]
+WantedBy=multi-user.target

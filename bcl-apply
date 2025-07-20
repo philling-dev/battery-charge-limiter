@@ -1,0 +1,11 @@
+#!/bin/bash
+# Script para aplicar o limite de carga da bateria na inicialização.
+
+CONFIG_FILE="/etc/bcl.conf"
+
+if [ -f "$CONFIG_FILE" ]; then
+    LIMIT=$(cat "$CONFIG_FILE")
+    # Executa o script principal com o valor do arquivo de configuração.
+    # O caminho para o python e para o script serão definidos pelo instalador.
+    /usr/bin/python3 /usr/local/bin/bcl.py "$LIMIT"
+fi
