@@ -103,3 +103,5 @@ To donate, copy the address below:
 ```
 
 **Keywords:** `linux`, `battery`, `charge limit`, `threshold`, `laptop`, `asus`, `lenovo`, `dell`, `sysfs`, `systemd`, `power management`, `battery health`, `lifespan`, `conservation mode`
+
+**Keywords:** `linux`, `battery`, `charge limit`, `threshold`, `laptop`, `asus`, `lenovo`, `dell`, `sysfs`, `systemd`, `power management`, `battery health`, `lifespan`, `conservation mode`
