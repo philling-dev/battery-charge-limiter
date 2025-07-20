@@ -19,8 +19,8 @@ To install the Battery Charge Limiter, follow these steps:
 1.  **Clone the repository:**
     ```bash
     git clone https://github.com/philling-dev/battery-charge-limiter.git # (This will be your repository)
-    
     cd battery-charge-limiter
+    chmod +x install.sh
     ```
 
 2.  **Execute the installation script:**
