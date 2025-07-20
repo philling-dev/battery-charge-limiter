@@ -18,15 +18,13 @@ To install the Battery Charge Limiter, follow these steps:
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/philling-dev/battery-charge-limiter.git # (This will be your repository)
+    git clone https://github.com/philling-dev/battery-charge-limiter.git
     cd battery-charge-limiter
-    chmod +x install.sh
     ```
 
-2.  **Make the installation script executable and execute it:**
+2.  **Run the installation script:**
     ```bash
-    chmod +x install.sh
-    sudo ./install.sh
+    sudo bash install.sh
     ```
 
     The script will:
@@ -74,8 +72,7 @@ sudo bcl-apply
 To remove the Battery Charge Limiter from your system:
 
 ```bash
-chmod +x uninstall.sh
-sudo ./uninstall.sh
+sudo bash uninstall.sh
 ```
 
 ## 💻 Compatibility
@@ -104,7 +101,5 @@ To donate, copy the address below:
 ```
 1Lyy8GJignLbTUoTkR1HKSe8VTkzAvBMLm
 ```
-
-**Keywords:** `linux`, `battery`, `charge limit`, `threshold`, `laptop`, `asus`, `lenovo`, `dell`, `sysfs`, `systemd`, `power management`, `battery health`, `lifespan`, `conservation mode`
 
 **Keywords:** `linux`, `battery`, `charge limit`, `threshold`, `laptop`, `asus`, `lenovo`, `dell`, `sysfs`, `systemd`, `power management`, `battery health`, `lifespan`, `conservation mode`
