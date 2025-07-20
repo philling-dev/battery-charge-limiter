@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "battery-charge-limiter"
+version = "1.0.0"
+authors = [
+    {name = "Guilherme Campos", email = "guicampos1992@gmail.com"},
+]
+description = "A simple and effective utility to limit battery charging on Linux laptops"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: System :: Hardware",
+    "Topic :: System :: Power (UPS)",
+]
+keywords = ["battery", "charge", "limit", "laptop", "linux", "power", "management"]
+
+dependencies = [
+    "PyQt6>=6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+    "black",
+    "flake8",
+]
+
+[project.scripts]
+battery-limiter = "battery_limiter.cli:main"
+battery-limiter-gui = "battery_limiter.gui:main"
+
+[project.urls]
+Homepage = "https://github.com/philling-dev/battery-charge-limiter"
+Repository = "https://github.com/philling-dev/battery-charge-limiter"
+Issues = "https://github.com/philling-dev/battery-charge-limiter/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+battery_limiter = ["*.md"]

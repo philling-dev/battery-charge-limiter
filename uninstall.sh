@@ -32,97 +32,122 @@ print_error() {
     echo -e "${RED}[ERROR]${NC} $1"
 }
 
-# Check if running as root
-if [ "$(id -u)" -ne 0 ]; then
-    print_error "This script must be run as root. Use sudo."
+# Check if running as regular user
+if [ "$(id -u)" -eq 0 ]; then
+    print_error "This script should not be run as root. Run as regular user."
     exit 1
 fi
 
-# Define paths
-BIN_PATH="/usr/local/bin"
-SERVICE_PATH="/etc/systemd/system"
-CONFIG_PATH="/etc"
+print_status "Uninstalling Battery Charge Limiter..."
 
-print_status "Uninstalling battery charge limiter..."
+# Stop and disable systemd services
+print_status "Stopping and disabling systemd services..."
 
-# Stop and disable service
-print_status "Stopping bcl service..."
-if systemctl is-active --quiet bcl.service; then
-    if ! systemctl stop bcl.service; then
-        print_warning "Failed to stop bcl.service, continuing anyway"
-    else
-        print_success "Service stopped"
-    fi
-else
-    print_status "Service is not running"
+# User service (new)
+if systemctl --user is-active --quiet battery-charge-limiter.service 2>/dev/null; then
+    systemctl --user stop battery-charge-limiter.service
+    print_success "Stopped user service"
 fi
 
-print_status "Disabling bcl service..."
+if systemctl --user is-enabled --quiet battery-charge-limiter.service 2>/dev/null; then
+    systemctl --user disable battery-charge-limiter.service
+    print_success "Disabled user service"
+fi
+
+# Legacy system service (old)
+if systemctl is-active --quiet bcl.service 2>/dev/null; then
+    sudo systemctl stop bcl.service
+    print_success "Stopped legacy system service"
+fi
+
 if systemctl is-enabled --quiet bcl.service 2>/dev/null; then
-    if ! systemctl disable bcl.service; then
-        print_warning "Failed to disable bcl.service, continuing anyway"
-    else
-        print_success "Service disabled"
-    fi
-else
-    print_status "Service is not enabled"
+    sudo systemctl disable bcl.service
+    print_success "Disabled legacy system service"
 fi
 
-# Remove files
+# Remove installed files
 print_status "Removing installed files..."
 
-if [ -f "$BIN_PATH/bcl" ]; then
-    rm -f "$BIN_PATH/bcl"
-    print_success "Removed $BIN_PATH/bcl"
+# Remove Python package
+if command -v pipx &> /dev/null; then
+    if pipx list | grep -q battery-charge-limiter; then
+        pipx uninstall battery-charge-limiter
+        print_success "Removed package via pipx"
+    fi
 else
-    print_status "$BIN_PATH/bcl not found"
+    # Remove from user installation
+    if pip show battery-charge-limiter &> /dev/null; then
+        pip uninstall -y battery-charge-limiter
+        print_success "Removed package via pip"
+    fi
+    
+    # Remove virtual environment
+    VENV_DIR="$HOME/.local/share/battery-limiter-venv"
+    if [ -d "$VENV_DIR" ]; then
+        rm -rf "$VENV_DIR"
+        print_success "Removed virtual environment"
+    fi
 fi
 
-if [ -f "$BIN_PATH/bcl-apply" ]; then
-    rm -f "$BIN_PATH/bcl-apply"
-    print_success "Removed $BIN_PATH/bcl-apply"
-else
-    print_status "$BIN_PATH/bcl-apply not found"
+# Remove wrapper scripts
+for script in battery-limiter battery-limiter-gui; do
+    if [ -f "$HOME/.local/bin/$script" ]; then
+        rm -f "$HOME/.local/bin/$script"
+        print_success "Removed $HOME/.local/bin/$script"
+    fi
+done
+
+# Remove desktop entry
+DESKTOP_FILE="$HOME/.local/share/applications/battery-charge-limiter.desktop"
+if [ -f "$DESKTOP_FILE" ]; then
+    rm -f "$DESKTOP_FILE"
+    print_success "Removed desktop entry"
 fi
 
-if [ -f "$SERVICE_PATH/bcl.service" ]; then
-    rm -f "$SERVICE_PATH/bcl.service"
-    print_success "Removed $SERVICE_PATH/bcl.service"
-else
-    print_status "$SERVICE_PATH/bcl.service not found"
+# Remove systemd service files
+USER_SERVICE="$HOME/.config/systemd/user/battery-charge-limiter.service"
+if [ -f "$USER_SERVICE" ]; then
+    rm -f "$USER_SERVICE"
+    systemctl --user daemon-reload
+    print_success "Removed user systemd service"
 fi
+
+# Remove legacy files (with sudo)
+print_status "Removing legacy system files..."
+
+LEGACY_FILES=(
+    "/usr/local/bin/bcl"
+    "/usr/local/bin/bcl-apply"
+    "/etc/systemd/system/bcl.service"
+)
+
+for file in "${LEGACY_FILES[@]}"; do
+    if [ -f "$file" ]; then
+        sudo rm -f "$file"
+        print_success "Removed legacy file: $file"
+    fi
+done
 
 # Ask about configuration file
-if [ -f "$CONFIG_PATH/bcl.conf" ]; then
+if [ -f "/etc/bcl.conf" ]; then
     echo ""
-    print_warning "Configuration file found at $CONFIG_PATH/bcl.conf"
+    print_warning "Legacy configuration file found at /etc/bcl.conf"
     read -p "Do you want to remove it? [y/N]: " response
     case $response in
         [yY][eE][sS]|[yY])
-            rm -f "$CONFIG_PATH/bcl.conf"
-            print_success "Removed $CONFIG_PATH/bcl.conf"
+            sudo rm -f "/etc/bcl.conf"
+            print_success "Removed /etc/bcl.conf"
             ;;
         *)
             print_status "Keeping configuration file"
             ;;
     esac
-else
-    print_status "Configuration file not found"
 fi
 
 # Reload systemd
-print_status "Reloading systemd daemon..."
-systemctl daemon-reload
+sudo systemctl daemon-reload 2>/dev/null || true
 
 echo ""
 print_success "Uninstallation completed successfully!"
-
-# Verify removal
-if ! systemctl list-unit-files | grep -q bcl.service; then
-    print_success "Service completely removed from systemd"
-else
-    print_warning "Service may still be visible in systemd"
-fi
-
 echo ""
-print_status "Battery charge limiter has been removed from your system"
+print_status "Battery Charge Limiter has been completely removed from your system"

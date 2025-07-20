@@ -1,0 +1,6 @@
+PyQt6>=6.0
+
+[dev]
+pytest>=6.0
+black
+flake8

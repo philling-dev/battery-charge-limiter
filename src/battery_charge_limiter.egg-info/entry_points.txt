@@ -1,0 +1,3 @@
+[console_scripts]
+battery-limiter = battery_limiter.cli:main
+battery-limiter-gui = battery_limiter.gui:main

@@ -1,0 +1,12 @@
+README.md
+pyproject.toml
+src/battery_charge_limiter.egg-info/PKG-INFO
+src/battery_charge_limiter.egg-info/SOURCES.txt
+src/battery_charge_limiter.egg-info/dependency_links.txt
+src/battery_charge_limiter.egg-info/entry_points.txt
+src/battery_charge_limiter.egg-info/requires.txt
+src/battery_charge_limiter.egg-info/top_level.txt
+src/battery_limiter/__init__.py
+src/battery_limiter/cli.py
+src/battery_limiter/core.py
+src/battery_limiter/gui.py
