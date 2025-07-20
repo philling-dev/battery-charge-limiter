@@ -3,9 +3,9 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Platform](https://img.shields.io/badge/Platform-Linux-blue.svg)](https://www.kernel.org/)
 
-**Keywords:** `linux`, `battery`, `charge limit`, `threshold`, `laptop`, `asus`, `lenovo`, `dell`, `sysfs`, `systemd`, `power management`, `battery health`, `lifespan`, `conservation mode`
-
 A simple and effective utility to limit the battery charging on your Linux laptop, helping to extend battery lifespan and health.
+
+**Keywords:** `linux`, `battery`, `charge limit`, `threshold`, `laptop`, `asus`, `lenovo`, `dell`, `sysfs`, `systemd`, `power management`, `battery health`, `lifespan`, `conservation mode`
 
 ## ✨ Features
 
