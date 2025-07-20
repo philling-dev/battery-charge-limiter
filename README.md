@@ -23,8 +23,9 @@ To install the Battery Charge Limiter, follow these steps:
     chmod +x install.sh
     ```
 
-2.  **Execute the installation script:**
+2.  **Make the installation script executable and execute it:**
     ```bash
+    chmod +x install.sh
     sudo ./install.sh
     ```
 
@@ -73,6 +74,7 @@ sudo bcl-apply
 To remove the Battery Charge Limiter from your system:
 
 ```bash
+chmod +x uninstall.sh
 sudo ./uninstall.sh
 ```
 
